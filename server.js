@@ -6,12 +6,10 @@ const app = express();
 // Connect Database
 connectDB();
 
-
 // Init
 app.use(express.json({ extended: false }));
 
 app.get('/', (req, res) => res.send('API running'));
-
 
 // Define Routes
 app.use('/api/users', require('./routes/api/users'));
