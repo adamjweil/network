@@ -1,10 +1,12 @@
 const express = require('express');
 const router = express.Router();
+
+const gravatar = require('gravatar');
 const bcrypt = require('bcryptjs');
 const auth = require('../../middleware/auth');
-const { check, validationResult } = require('express-validator');
 const jwt = require('jsonwebtoken');
 const config = require('config');
+const { check, validationResult } = require('express-validator');
 
 const Profile = require('../../models/Profile');
 const User = require('../../models/User');
@@ -51,11 +53,8 @@ router.post('/', auth, [
       bio,
       hiredate,
       skills,
-      githubusername,
-      twitter,
-      linkedin,
-      facebook
-      } = req.body
+      githubusername
+    } = req.body;
 
     // Build profile object
     const profileFields = {};
@@ -65,30 +64,29 @@ router.post('/', auth, [
     if(bio) profileFields.bio = bio;
     if(skills) profileFields.skills = skills;
     if(githubusername) profileFields.githubusername = githubusername;
-    // if (skills) {
-    //   profileFields.skills = skills.split(',').map(skill => skill.trim());
-    // }
+    if (!skills.isEmpty()) {
+      profileFields.skills = skills.split(",").map((skill) => skill.trim());
+    }
 
     try {
-      let profile = await Profile.findOut({ user: req.user.id });
+      let profile = await Profile.findOne({ user: req.user.id });
 
       if(profile) {
         // Update
-        profile = await Profile.findOutAndUpdate(
+        profile = await Profile.findOneAndUpdate(
           { user: req.user.id },
           { $set: profileFields },
           { new: true }
         );
-
-        return res.json(profile);
+       res.json(profile);
       }
 
       // Create
       profile = new Profile(profile);
 
-      await Profile.save();
+      await profile.save();
       res.json(profile);
-      
+
     } catch(err) {
       console.error(err.message);
       res.status(500).send('Server error');

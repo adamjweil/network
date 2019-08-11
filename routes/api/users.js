@@ -11,7 +11,6 @@ const User = require('../../models/User');
 // @route GET api/users
 // @desc Register user
 // @access Public
-
 router.post('/',
   [
     check('name', 'Name is required')
@@ -27,7 +26,6 @@ router.post('/',
      }
 
      const { name, email, password } = req.body;
-     console.log(req.body);
 
      try {
        // See if user exists
