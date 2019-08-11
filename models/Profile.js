@@ -6,12 +6,10 @@ const ProfileSchema = new mongoose.Schema({
     ref: 'user'
   },
   team: {
-    group: {
-      type: String
-    },
-    title: {
-      type: String
-    }
+    type: String
+  },
+  title: {
+    type: String
   },
   hiredate: {
     type: Date
