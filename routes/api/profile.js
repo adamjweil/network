@@ -38,7 +38,7 @@ router.get('/me', auth, async (req, res) => {
 // @access Private
 router.post('/', auth, [
 [
-  check('bio', 'You need to enter a bio').not().isEmpty(),
+  check('bio', 'You need to enter a bio').exists(),
   check('skills', 'Please enter your skills').not().isEmpty()
   ]
 ],
@@ -59,13 +59,13 @@ router.post('/', auth, [
     // Build profile object
     const profileFields = {};
     profileFields.user = req.user.id;
+
     if(team) profileFields.team = team;
     if(hiredate) profileFields.hiredate = hiredate;
     if(bio) profileFields.bio = bio;
-    if(skills) profileFields.skills = skills;
     if(githubusername) profileFields.githubusername = githubusername;
-    if (!skills.isEmpty()) {
-      profileFields.skills = skills.split(",").map((skill) => skill.trim());
+    if (skills) {
+      profileFields.skills = skills.split(",").map(skill => skill.trim());
     }
 
     try {
@@ -84,9 +84,8 @@ router.post('/', auth, [
       // Create
       profile = new Profile(profile);
 
-      await profile.save();
+      profile.save();
       res.json(profile);
-
     } catch(err) {
       console.error(err.message);
       res.status(500).send('Server error');

@@ -55,7 +55,7 @@ router.post('/',
         // Hashing plaintext password using salt
         user.password = await bcrypt.hash(password, salt);
 
-        await user.save();
+        user.save();
 
         const payload = {
           user: {
