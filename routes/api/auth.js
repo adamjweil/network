@@ -13,6 +13,7 @@ const User = require('../../models/User');
 router.get('/', auth, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select('-password');
+    // conaole.log({user});
     res.json(user);
   } catch(err) {
     console.error(err.message);
@@ -50,8 +51,8 @@ router.post('/',
 
        if(!isMatch) {
          return res
-         .status(400)
-         .json({ errors: [{msg: 'Invalid Credentials'}] });
+          .status(400)
+          .json({ errors: [{msg: 'Invalid Credentials'}] });
        }
 
        const payload = {
@@ -75,6 +76,5 @@ router.post('/',
      }
    }
 );
-
 
 module.exports = router;
