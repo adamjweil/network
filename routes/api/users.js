@@ -7,7 +7,6 @@ const config = require('config');
 const { check, validationResult } = require('express-validator');
 
 const User = require('../../models/User');
-
 // @route GET api/users
 // @desc Register user
 // @access Public
@@ -41,6 +40,7 @@ router.post('/',
          d: 'mm'
        });
 
+       // Create new user
        user = new User({
          name,
          email,
@@ -49,11 +49,8 @@ router.post('/',
        });
 
        // Encrypt password
-        // Generate salt
-        const salt = await bcrypt.genSalt(10);
-
-        // Hashing plaintext password using salt
-        user.password = await bcrypt.hash(password, salt);
+        const salt = await bcrypt.genSalt(10); // Generate salt
+        user.password = await bcrypt.hash(password, salt); // Hashing plaintext password using salt
 
         user.save();
 

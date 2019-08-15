@@ -11,16 +11,17 @@ const User = require('../../models/User');
 // @desc Auth route
 // @access Public
 router.get('/', auth, async (req, res) => {
+   const { email, password } = req.body;
   try {
-    const user = await User.findById(req.user.id).select('-password');
-    // conaole.log({user});
-    res.json(user);
+    // const user = await User.findById(req.body.user.id).select('-password');
+    const user = await User.findOne({ email });
+    res.json({user});
+    console.log({ user });
   } catch(err) {
     console.error(err.message);
     res.status(500).send('Server Error');
   }
 });
-
 
 // @route POST api/users
 // @desc Login user
@@ -31,7 +32,7 @@ router.post('/',
     check('password', 'Please enter a password with 6 or more chracters').exists()
   ],
 
-   async (req, res) => {
+   async (req, res, next) => {
      const errors = validationResult(req);
      if (!errors.isEmpty()) {
        return res.status(400).json({ errors: errors.array() })

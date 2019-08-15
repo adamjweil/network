@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const User = require('./User');
 
 const ProfileSchema = new mongoose.Schema({
   user: {
@@ -32,8 +33,15 @@ const ProfileSchema = new mongoose.Schema({
     },
     facebook: {
       type: String
+    },
+    youtube: {
+      type: String
     }
   },
+  date: {
+    type: Date,
+    default: Date.now
+  }
 });
 
 module.exports = Profile = mongoose.model('profile', ProfileSchema);
