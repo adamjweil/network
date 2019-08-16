@@ -1,12 +1,13 @@
 import axios from "axios";
-import { setAlert } from "../../alerts";
+import { setAlert } from "./alerts";
 import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
-  USER_LOADED,
-  AUTH_ERROR
+  AUTH_ERROR,
+  USER_LOADED
 } from "./types";
 import setAuthToken from "../utils/setAuthToken";
+
 //Load User
 export const loadUser = () => async dispatch => {
   if (localStorage.token) {
@@ -27,6 +28,7 @@ export const loadUser = () => async dispatch => {
   }
 };
 
+// Register User
 export const register = ({ email, password }) => async dispatch => {
   const config = {
     headers: {
@@ -44,16 +46,13 @@ export const register = ({ email, password }) => async dispatch => {
     });
   } catch (err) {
     const errors = err.response.data.errors;
+
     if (errors) {
-      errors.forEach(error => dispatch(setAlert(error.msg, "danger")));
+      errors.forEach(error => dispatch(setAlert(error, "danger")));
     }
+
     dispatch({
       type: REGISTER_FAIL
     });
   }
 };
-
-// export const onFormSubmit = formValues => {
-//   console.log(formValues);
-//   this.props.onRegister(formValues);
-// };
