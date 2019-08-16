@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 
+import GoogleAuth from "../GoogleAuth";
 
-class Navbar extends Reeact {
+class Navbar extends React.Component {
   render() {
     const { currentUserId } = this.props;
 
@@ -14,16 +15,17 @@ class Navbar extends Reeact {
             Home
           </Link>
           <div className="right menu">
-            <Link to="/api/profile/me" className="item">
-              My Profile
+            <Link to="/register" className="item">
+              Register
             </Link>
-            <Link to="/api/profile/me" className="item">
-              Sign Out
+            <Link to="/login" className="item">
+              Login
             </Link>
+            <GoogleAuth />
           </div>
         </div>
-    )
-  } else if (!this.props.isSignedIn) {
+      );
+    } else if (!this.props.isSignedIn) {
       return (
         <div className="ui secondary pointing menu">
           <Link to="/" className="item">
@@ -41,6 +43,6 @@ class Navbar extends Reeact {
       );
     }
   }
-};
+}
 
 export default connect()(Navbar);
