@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
@@ -6,8 +6,6 @@ import GoogleAuth from "../GoogleAuth";
 
 class Navbar extends React.Component {
   render() {
-    const { currentUserId } = this.props;
-
     if (this.props.isSignedIn) {
       return (
         <div className="ui secondary pointing menu">
