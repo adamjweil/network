@@ -1,11 +1,34 @@
 import React, { useState } from "react";
 import { Field, Label, reduxForm } from "redux-form";
 import { connect } from "react-redux";
-import { register, onFormChange, onFormSubmit } from "../../actions";
-import { setAlert } from "./../alerts";
+import { Link } from "react-router-dom";
+import setAlert from "./../actions/alert";
+import { register } from "./../actions/auth";
+import { onFormChange, loadUser } from "./../actions/auth";
+
 // import INITIAL_STATE from "../../reducers/authReducer";
 
-const Register = () => {
+const Register = ({ setAlert }) => {
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+    password2: ""
+  });
+
+  const { email, password, password2 } = formData;
+
+  const onChange = e => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const onSubmit = async e => {
+    e.preventDefault();
+    if (password !== password2) {
+      setAlert("passwords do no match", "danger");
+    } else {
+      console.log("SUCCESS");
+    }
+  };
   return (
     <div className="container">
       <form className="ui success form" onSubmit={this.props.handleSubmit()}>
@@ -76,5 +99,5 @@ const formWrapped = reduxForm({
 
 export default connect(
   null,
-  { register, onFormChange, onFormSubmit }
+  { setAlert, register }
 )(Register);
