@@ -1,16 +1,16 @@
-import React, { Fragment, useEffect } from "react";
+import React, { useEffect } from "react";
 import store from "./../store";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { Router, Route, Switch } from "react-router-dom";
 // import "./App.css";
-import { connect } from "react-redux";
+
 import setAuthToken from "./../utils/setAuthToken";
 import Landing from "./layout/Landing";
 import Navbar from "./layout/Navbar";
-import AsyncValidationForm from "./auth/AsyncValidationForm";
+import Register from "./auth/Register";
 import Login from "./auth/Login";
+import Alert from "./layout/Alert";
 import history from "./../history";
-import { loadUser, register, onFormChange } from "./../actions/auth";
-import { Provider } from "react-redux";
+import { loadUser } from "./../actions/auth";
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -24,14 +24,15 @@ const App = () => {
   return (
     <div className="ui container">
       <Router history={history}>
-        <div>
-          <Navbar isSignedIn={() => this.props.isSignedIn} />
+        <Navbar isSignedIn={() => this.props.isSignedIn} />
+        <Route path="/" exact component={Landing} />
+        <Alert />
+        <section className="container">
           <Switch>
-            <Route path="/" exact component={Landing} />
-            <Route path="/register" exact component={AsyncValidationForm} />
+            <Route path="/register" exact component={Register} />
             <Route path="/login" exact component={Login} />
           </Switch>
-        </div>
+        </section>
       </Router>
     </div>
   );
