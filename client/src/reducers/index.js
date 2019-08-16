@@ -5,5 +5,6 @@ import alert from "./alert";
 
 export default combineReducers({
   auth: authReducer,
-  alert: alert
+  alert: alert,
+  form: formReducer
 });

@@ -6,12 +6,11 @@ import { connect } from "react-redux";
 import setAuthToken from "./../utils/setAuthToken";
 import Landing from "./layout/Landing";
 import Navbar from "./layout/Navbar";
-import Register from "./auth/Register";
+import AsyncValidationForm from "./auth/AsyncValidationForm";
 import Login from "./auth/Login";
 import history from "./../history";
 import { loadUser, register, onFormChange } from "./../actions/auth";
 import { Provider } from "react-redux";
-const oAuth = "developers.google.com/identity/protocols/googlescopes";
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -23,21 +22,19 @@ const App = () => {
   }, []);
 
   return (
-    <Provider store={store}>
-      <div className="ui container">
-        <Router history={history}>
-          <div>
-            <Navbar isSignedIn={() => this.props.isSignedIn} />
-            <Switch>
-              <Route path="/" exact component={Landing} />
-              <Route path="/register" exact component={Register} />
-              <Route path="/login" exact component={Login} />
-            </Switch>
-          </div>
-        </Router>
-      </div>
-    </Provider>
+    <div className="ui container">
+      <Router history={history}>
+        <div>
+          <Navbar isSignedIn={() => this.props.isSignedIn} />
+          <Switch>
+            <Route path="/" exact component={Landing} />
+            <Route path="/register" exact component={AsyncValidationForm} />
+            <Route path="/login" exact component={Login} />
+          </Switch>
+        </div>
+      </Router>
+    </div>
   );
 };
 
-export default connect()(App);
+export default App;

@@ -9,7 +9,8 @@ const INITIAL_STATE = {
   token: localStorage.getItem("token"),
   isAuthenticated: null,
   loading: true,
-  user: null
+  user: null,
+  isSignedIn: false
 };
 
 export default function(state = INITIAL_STATE, action) {
