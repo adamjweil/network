@@ -6,6 +6,7 @@ import GoogleAuth from "./../GoogleAuth";
 import PropTypes from "prop-types";
 
 const Register = ({ setAlert, register }) => {
+  // const { setAlert, register } = this.props;
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -14,20 +15,21 @@ const Register = ({ setAlert, register }) => {
 
   const { email, password, password2 } = formData;
 
-  const onChange = e => {
+  const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-  const onSubmit = e => {
+
+  const onSubmit = async e => {
     e.preventDefault();
     if (password !== password2) {
       setAlert("Passwords do not match", "danger");
     } else {
-      register({ email, password });
+      console.log("SUCCESS");
+      // register({ email, password });
     }
   };
 
   return (
-    <form className="ui form success" onSubmit={onSubmit}>
+    <form className="ui form success" onSubmit={() => onSubmit}>
       <div className="field">
         <div className="form label">
           <label>Email:</label>
@@ -38,7 +40,7 @@ const Register = ({ setAlert, register }) => {
             name="email"
             id="name"
             placeholder="Email"
-            onChange={onChange}
+            onChange={() => onChange}
           />
         </div>
       </div>
@@ -52,7 +54,7 @@ const Register = ({ setAlert, register }) => {
             name="password"
             id="password"
             placeholder="Password"
-            onChange={() => this.onChange}
+            onChange={() => onChange}
           />
         </div>
       </div>
@@ -66,7 +68,7 @@ const Register = ({ setAlert, register }) => {
             name="password2"
             id="password2"
             placeholder="Confirm Password"
-            onChange={() => this.onChange}
+            onChange={() => onChange}
           />
         </div>
         <div style={{ padding: "20px", display: "in-line" }}>
@@ -85,7 +87,11 @@ Register.propTypes = {
   register: PropTypes.func.isRequired
 };
 
+const mapStateToProps = state => ({
+  register: state.register
+});
+
 export default connect(
-  null,
+  mapStateToProps,
   { setAlert, register }
 )(Register);

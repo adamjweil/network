@@ -10,17 +10,12 @@ import Register from "./auth/Register";
 import Login from "./auth/Login";
 import Alert from "./layout/Alert";
 import history from "./../history";
-import { loadUser } from "./../actions/auth";
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
 }
 
 const App = () => {
-  useEffect(() => {
-    store.dispatch(loadUser());
-  }, []);
-
   return (
     <div className="ui container">
       <Router history={history}>
