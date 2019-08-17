@@ -1,13 +1,13 @@
 import { REGISTER_SUCCESS, REGISTER_FAIL } from "../actions/types";
 
-const initialState = {
+const INITIAL_STATE = {
   token: localStorage.getItem("token"),
   isAuthenticated: null,
   loading: true,
   user: null
 };
 
-export default function(state = initialState, action) {
+export default function(state = INITIAL_STATE, action) {
   const { type, payload } = action;
 
   switch (type) {
@@ -27,5 +27,7 @@ export default function(state = initialState, action) {
         isAuthenticated: false,
         loading: false
       };
+    default:
+      return state;
   }
 }
