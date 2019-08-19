@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
+import { Link, Redirect } from "react-router-dom";
 import { setAlert } from "../../actions/alert";
 import { register } from "../../actions/auth";
-import GoogleAuth from "./../GoogleAuth";
 import PropTypes from "prop-types";
 
-const Register = ({ setAlert, register }) => {
-  // const { setAlert, register } = this.props;
+const Register = ({ setAlert }) => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -23,72 +22,71 @@ const Register = ({ setAlert, register }) => {
     if (password !== password2) {
       setAlert("Passwords do not match", "danger");
     } else {
-      console.log("SUCCESS");
-      // register({ email, password });
+      register({ email, password, isAuthenticated: true });
     }
   };
 
+  // if (user.isAuthenticated) {
+  //   return <Redirect to="/dashboard" />;
+  // }
+
   return (
-    <form className="ui form success" onSubmit={() => onSubmit}>
-      <div className="field">
-        <div className="form label">
-          <label>Email:</label>
-        </div>
-        <div className="ui input">
+    <div className="ui container">
+      <div className="form header">
+        <h1 className="large text-primary">Sign Up</h1>
+        <p className="lead">
+          <i className="fas fa-user" /> Create Your Account
+        </p>
+      </div>
+      <form className="form" onSubmit={e => onSubmit(e)} method="POST">
+        <div className="form-group">
           <input
-            type="text"
+            type="email"
+            placeholder="Email Address"
             name="email"
-            id="name"
-            placeholder="Email"
-            onChange={() => onChange}
+            value={email}
+            onChange={e => onChange(e)}
           />
+          <small className="form-text">
+            This site uses Gravatar so if you want a profile image, use a
+            Gravatar email
+          </small>
         </div>
-      </div>
-      <div className="field">
-        <div className="form label">
-          <label>Password:</label>
-        </div>
-        <div className="ui input">
+        <div className="form-group">
           <input
             type="password"
-            name="password"
-            id="password"
             placeholder="Password"
-            onChange={() => onChange}
+            name="password"
+            value={password}
+            onChange={e => onChange(e)}
           />
         </div>
-      </div>
-      <div className="field">
-        <div className="form label">
-          <label>Confirm Password:</label>
-        </div>
-        <div className="ui input">
+        <div className="form-group">
           <input
             type="password"
-            name="password2"
-            id="password2"
             placeholder="Confirm Password"
-            onChange={() => onChange}
+            name="password2"
+            value={password2}
+            onChange={e => onChange(e)}
           />
         </div>
-        <div style={{ padding: "20px", display: "in-line" }}>
-          <button className="ui button primary">Register</button>
-        </div>
-        <div style={{ padding: "20px", display: "in-line" }}></div>
-      </div>
-    </form>
+        <input type="submit" className="btn btn-primary" value="Register" />
+      </form>
+      <p className="my-1">
+        Already have an account? <Link to="/login">Sign In</Link>
+      </p>
+    </div>
   );
 };
 
-// The order of the decoration does not matter.
-
 Register.propTypes = {
   setAlert: PropTypes.func.isRequired,
-  register: PropTypes.func.isRequired
+  register: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool
 };
 
 const mapStateToProps = state => ({
-  register: state.register
+  isAuthenticated: state.auth.isAuthenticated
 });
 
 export default connect(
