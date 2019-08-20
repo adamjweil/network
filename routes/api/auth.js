@@ -13,8 +13,8 @@ const User = require('../../models/User');
 router.get('/', auth, async (req, res) => {
    const { email, password } = req.body;
   try {
-    // const user = await User.findById(req.body.user.id).select('-password');
-    const user = await User.findOne({ email });
+    const user = await User.findById(req.body.user.id).select('-password');
+    // const user = await User.findOne({ email });
     res.json({user});
     console.log({ user });
   } catch(err) {

@@ -16,14 +16,15 @@ const Register = ({ setAlert, register }) => {
   const { email, password, password2 } = formData;
 
   const onChange = e =>
+    e.preventDefault();
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const body = JSON.stringify({ email, password, password2 });
   const config = {
     headers: {
       'Content-Type': 'application/json'
     }
   }
+  const body = JSON.stringify({ email, password, password2 });
 
   const onSubmit = async e => {
     e.preventDefault();
@@ -34,19 +35,23 @@ const Register = ({ setAlert, register }) => {
     }
   };
 
+  const submitFormHandler = (event) => {
+    event.preventDefault();
+    console.dir(thi.refs.name.value);
+  }
+
     return (
       <div>
         <div className="header">
           <h1 className='large text-primary'>Sign Up</h1>
           <p className='load'>
-            <i className='fas fa-useer'/> Create Account
+            <i className='fas fa-useer'> Create Account </i>
           </p>
-          <form className="ui form" onSubmit={e => onSubmit(e)}>
+          <form className="ui form" onSubmit={this.submitFormHandler}>
             <div className="field">
               <input
                 type='text'
                 placeholder='email'
-                name='email'
                 value={email}
                 onChange={e => onChange(e)}
               />
@@ -64,8 +69,8 @@ const Register = ({ setAlert, register }) => {
               <input
                 type='password'
                 placeholder='Confirm Password'
-                name='password2'
-                value={password2}
+                name={password2}
+                value={{'password2': password2 ]}}
                 onChange={e => onChange(e)}
               />
             </div>
@@ -83,7 +88,11 @@ Register.propTypes = {
   register: PropTypes.func.isRequired
 }
 
+const mapStateToProps = state => {
+  return { user: state.auth.user }
+}
+
 export default connect(
-  null,
+  mapStateToProps,
   { setAlert, register }
 )(Register);
