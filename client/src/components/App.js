@@ -8,8 +8,8 @@ import Login from "./auth/Login";
 import Dashboard from "./auth/Dashboard";
 
 // Redux
+import { connect } from "redux";
 import { Provider } from "react-redux";
-import { connect } from 'edux';
 import store from "./../store";
 import { loadUser } from "./../actions/auth";
 import setAuthToken from "./../utils/setAuthToken";
