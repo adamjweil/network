@@ -15,8 +15,7 @@ const Register = ({ setAlert, register }) => {
 
   const { email, password, password2 } = formData;
 
-  const onChange = e =>
-    e.preventDefault();
+  const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const config = {
@@ -27,32 +26,27 @@ const Register = ({ setAlert, register }) => {
   const body = JSON.stringify({ email, password, password2 });
 
   const onSubmit = async e => {
-    e.preventDefault();
-    if (password !== password2) {
-      setAlert('Passwords do not match', 'danger');
-    } else {
-      register({ email, password });
-    }
+    await register({ email, password });
   };
 
-  const submitFormHandler = (event) => {
-    event.preventDefault();
-    console.dir(thi.refs.name.value);
+  const submitFormHandler = e => {
+    e.preventDefault();
+    console.dir(this.refs.name.value);
   }
 
     return (
       <div>
         <div className="header">
-          <h1 className='large text-primary'>Sign Up</h1>
+          <h1 className='large text-primary'>Register</h1>
           <p className='load'>
             <i className='fas fa-useer'> Create Account </i>
           </p>
-          <form className="ui form" onSubmit={this.submitFormHandler}>
+          <form className="ui form" onSubmit={e => onSubmit(e)}>
             <div className="field">
               <input
                 type='text'
                 placeholder='email'
-                value={email}
+                value={ref => email}
                 onChange={e => onChange(e)}
               />
             </div>
@@ -61,7 +55,7 @@ const Register = ({ setAlert, register }) => {
                 type='password'
                 placeholder='Enter Password'
                 name='password'
-                value={password}
+                value={ ref => password }
                 onChange={e => onChange(e)}
               />
             </div>
@@ -70,7 +64,7 @@ const Register = ({ setAlert, register }) => {
                 type='password'
                 placeholder='Confirm Password'
                 name={password2}
-                value={{'password2': password2 ]}}
+                value={ref => password2}
                 onChange={e => onChange(e)}
               />
             </div>
@@ -89,10 +83,10 @@ Register.propTypes = {
 }
 
 const mapStateToProps = state => {
-  return { user: state.auth.user }
+  return ({ auth: state.auth.isAuthenticated });
 }
 
 export default connect(
   mapStateToProps,
-  { setAlert, register }
+  { register }
 )(Register);

@@ -1,9 +1,13 @@
-const jwt = require('jsonwebtoken');
-const config = require('config');
+const mongoose = require('mongoose');
+const express = require('express');
+var cors = require('cors');
+const bodyParser = require('body-parser');
+const logger = require('morgan');
+const Data = require('./data');
 
 
 module.exports = function(req, res, next) {
-  
+
   // Get token from header
   const token = req.header('x-auth-token');
 
