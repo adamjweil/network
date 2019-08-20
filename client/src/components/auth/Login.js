@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-// import { setAlert } from '../../actions/alert';
+import { setAlert } from '../../actions/alert';
 import { login } from '../../actions/auth';
 import axios from 'axios';
 import PropTypes from 'prop-types';
@@ -29,7 +29,7 @@ const Login = ({ setAlert, login }) => {
     e.preventDefault();
     login(email, password);
   };
-   
+
     return (
       <div>
         <div className="header">
@@ -67,9 +67,12 @@ const Login = ({ setAlert, login }) => {
 }
 
 Login.propTypes = {
-  setAlert: PropTypes.func.isRequired,
-  login: PropTypes.func.isRequired
-}
+  setAlert: PropTypes.func.isRequired
+};
+
+const mapStateToProps = state => ({
+  auth: state,auth
+});
 
 export default connect(
   null,
