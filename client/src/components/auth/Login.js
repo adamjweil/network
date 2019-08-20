@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import { Redirect } from "react-router-dom";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { login } from "../../actions/auth";
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+// import { setAlert } from '../../actions/alert';
+import { login } from '../../actions/auth';
 import axios from 'axios';
-import config from 'config';
+import PropTypes from 'prop-types';
 
 const Login = ({ setAlert, login }) => {
   const [formData, setFormData] = useState({
@@ -13,79 +13,65 @@ const Login = ({ setAlert, login }) => {
   });
 
   const { email, password } = formData;
+
   const body = JSON.stringify({ email, password });
+
+  const config = {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }
 
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const onSubmit = async e => {
     e.preventDefault();
-    login({ email, password });
-  
-    const config = {
-      headers: {
-        "Content-Type": "application/json"
-      }
-    };
+    login(email, password);
+  };
+   
+    return (
+      <div>
+        <div className="header">
+          <h1 className='large text-primary'>Sign Up</h1>
+          <p className='load'>
+            <i className='fas fa-useer'/> Create Account
+          </p>
+          <form className="ui form" onSubmit={e => onSubmit(e)}>
+            <div className="field">
+              <input
+                type='text'
+                placeholder='email'
+                name='email'
+                value={email}
+                onChange={e => onChange(e)}
+              />
+            </div>
+            <div className="field">
+              <input
+                type='password'
+                placeholder='Enter Password'
+                name='password'
+                value={password}
+                onChange={e => onChange(e)}
+              />
+            </div>
 
-    try {
-      const res = await axios.post("http://localhost:5000/api/users", body, config);
-      dispatch({
-        type: REGISTER_SUCCESS,
-        payload: res.data
-      });
-   } catch (err) {
-     dispatch({
-       type: AUTH_ERROR
-     });
-   }
-  }
-
-return (
-    <div className="ui fluid card">
-      <div className="content">
-        <form className="ui form" onSubmit={e => onSubmit(e)}>
-          <div className="field">
-            <label>Email:</label>
-            <input
-              type="text"
-              name="email"
-              id="email"
-              placeholder="Email"
-              onChange={onChange} />
-          </div>
-          <div className="field">
-            <label>Password:</label>
-            <input
-              type="password"
-              name="password"
-              id="password"
-              placeholder="Password"
-              onChange={onChange} />
-          </div>
-          <button
-            className="ui primary labeled icon button"
-            type="submit"
-            onClick={onSubmit}>
-            <i className="unlock alternate icon"></i>
-            Login
-          </button>
-        </form>
+            <button type='Submit' className="ui button primary">
+              Register
+            </button>
+          </form>
+        </div>
       </div>
-    </div>
-);
-};
+    );
+}
 
 Login.propTypes = {
-  login: PropTypes.func.isRequired,
-  isAuthenticated: PropTypes.bool
-};
-
-const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated
-});
+  setAlert: PropTypes.func.isRequired,
+  login: PropTypes.func.isRequired
+}
 
 export default connect(
-  mapStateToProps,
-  { login, setAlerts }
+  null,
+  { setAlert, login }
 )(Login);

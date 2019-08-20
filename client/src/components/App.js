@@ -9,6 +9,7 @@ import Dashboard from "./auth/Dashboard";
 
 // Redux
 import { Provider } from "react-redux";
+import { connect } from 'edux';
 import store from "./../store";
 import { loadUser } from "./../actions/auth";
 import setAuthToken from "./../utils/setAuthToken";
