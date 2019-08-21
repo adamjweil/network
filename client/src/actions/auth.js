@@ -37,20 +37,19 @@ export const register = ({ username, email, password }) => async dispatch => {
     const body = JSON.stringify({ username, email, password });
 
       try {
-         const res = await apis.post('/api/users', body, config)
+         const res = await apis.post('/users', body, config)
 
         dispatch({
           type: REGISTER_SUCCESS,
           payload: res.data
         })
-        dispatch(loadUser());
 
-        const body = JSON.stringify({ email, password });
         dispatch({
           type: USER_LOADED,
           payload: res.data
         });
 
+        dispatch(loadUser());
       } catch (err) {
         const errors = err.response.data.errors;
 

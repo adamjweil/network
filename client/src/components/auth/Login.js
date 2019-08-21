@@ -46,7 +46,7 @@ const Login = ({ login , setAlert }) => {
               <Form size="large">
                 <Form.Input
                   fluid
-                  icon="email"
+                  icon="user"
                   type="text"
                   name='email'
                   placeholder="Email address"
@@ -71,7 +71,7 @@ const Login = ({ login , setAlert }) => {
             </Segment>
             <Message>
                  Not registered yet?
-                 <Link to="/register" component={Register}>
+                 <Link to="/register">
                   Sign up here...
                  </Link>
                </Message>

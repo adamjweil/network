@@ -8,8 +8,8 @@ import Login from "./auth/Login";
 import Dashboard from "./auth/Dashboard";
 
 // Redux
-import { connect } from "redux";
 import { Provider } from "react-redux";
+import { connect } from "react-redux";
 import store from "./../store";
 import { loadUser } from "./../actions/auth";
 import setAuthToken from "./../utils/setAuthToken";
@@ -45,4 +45,7 @@ const App = () => {
   );
 };
 
-export default App;
+export default connect(
+  null,
+  { loadUser }
+)(App);

@@ -1,12 +1,14 @@
 const mongoose = require('mongoose');
 const express = require('express');
-const app = express().use().cors();
+const app = express();
+
 let cors = require('cors');
+const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
-const Data = require('./data');
-const apis = require('./client/src/apis/api');
-const api = require('./routes/api/auth');
+const api = require('./client/src/apis/apis');
+
+
 
 const API_PORT = 5000 || process.env.PORT;
 
@@ -33,7 +35,7 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(logger('dev'));
-app.use('/api', apis);
+app.use('/api', api);
 
 
 // launch our backend into a port

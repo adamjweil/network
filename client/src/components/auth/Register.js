@@ -16,6 +16,7 @@ import {
   Header,
   Message,
   Segment,
+  Container
 } from 'semantic-ui-react';
 
 const Register = ({ setAlert, register }) => {
@@ -32,7 +33,8 @@ const Register = ({ setAlert, register }) => {
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
   const onSubmit = async dispatch => {
-    const res = await register({ username, email, password });
+    const res = await register({ formData });
+    console.log(res);
   }
 
   const config = {
@@ -43,67 +45,67 @@ const Register = ({ setAlert, register }) => {
   const body = JSON.stringify({ username, email, password, password2 });
 
     return (
-      <Grid centered columns={2}>
-        <Grid.Column>
-          <Header as="h2" textAlign="center">
-          Create an Account
-          </Header>
-        <Segment>
-          <Form size="md">
-            <Form.Input
-              fluid
-              icon="username"
-              type="text"
-              name="username"
-              placeholder="Enter a Username"
-              value={username}
-              onChange={e => onChange(e)}
-              iconPosition="left"
-            />
-            <Form.Input
-              fluid
-              icon="email"
-              type="email"
-              name="email"
-              placeholder="Enter Your Email"
-              value={email}
-              onChange={e => onChange(e)}
-              iconPosition="left"
-            />
-            <Form.Input
-              fluid
-              icon="password"
-              type="password"
-              name="password"
-              placeholder="password"
-              value={password}
-              onChange={e => onChange(e)}
-              iconPosition="left"
-            />
-            <Form.Input
-              fluid
-              icon="password"
-              type="password"
-              name="password2"
-              placeholder="password"
-              value={password2}
-              onChange={e => onChange(e)}
-              iconPosition="left"
-            />
-            <Button color="blue" fluid size="large">
-              Register
-            </Button>
-          </Form>
-        </Segment>
-      <Message>
+      <Container>
+        <Grid centered columns={2}>
+          <Grid.Column>
+            <Header as="h2" textAlign="center">
+            Create an Account
+            </Header>
+          <Segment>
+            <Form size="md">
+              <Form.Input
+                fluid
+                icon="username"
+                type="text"
+                name="username"
+                placeholder="Enter a Username"
+                value={username}
+                onChange={e => onChange(e)}
+                iconPosition="left"
+              />
+              <Form.Input
+                fluid
+                icon="email"
+                type="email"
+                name="email"
+                placeholder="Enter Your Email"
+                value={email}
+                onChange={e => onChange(e)}
+                iconPosition="left"
+              />
+              <Form.Input
+                fluid
+                icon="password"
+                type="password"
+                name="password"
+                placeholder="password"
+                value={password}
+                onChange={e => onChange(e)}
+                iconPosition="left"
+              />
+              <Form.Input
+                fluid
+                icon="password"
+                type="password"
+                name="password2"
+                placeholder="password"
+                value={password2}
+                onChange={e => onChange(e)}
+                iconPosition="left"
+              />
+              <Button color="blue" fluid size="large">
+                Register
+              </Button>
+            </Form>
+          </Segment>
+        <Message>
            Not registered yet?
-           <Link to="/register" component={Register}>
-            Sign up here...
-           </Link>
-           </Message>
-         </Grid.Column>
-        </Grid>
-    );
+           <Link to="/register" component={Register}>Sign up here...</Link>
+         </Message>
+       </Grid.Column>
+      </Grid>
+    </Container>
+  );
 };
 
 Register.propTypes = {
