@@ -1,90 +1,110 @@
-import React, { useState } from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { setAlert } from '../../actions/alert';
-import { register } from '../../actions/auth';
-import axios from 'axios';
-import PropTypes from 'prop-types';
+import React, { useState } from "react";
+import { connect } from "react-redux";
+import { Link, Redirect } from "react-router-dom";
+import { setAlert } from "../../actions/alert";
+import { register } from "../../actions/auth";
+import axios from "axios";
+import PropTypes from "prop-types";
+import Login from "./Login";
 
-const Register = ({ setAlert, register }) => {
+import {
+  Button,
+  Form,
+  Grid,
+  Header,
+  Message,
+  Segment
+} from "semantic-ui-react";
+
+const Register = ({ setAlert, register, isAuthenticated }) => {
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    password2: ''
+    username: "",
+    email: "",
+    password: "",
+    password2: ""
   });
 
-  const { email, password, password2 } = formData;
+  const { username, email, password, password2 } = formData;
 
-  const onChange = (e) =>
+  const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
-
-  const config = {
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  }
-  const body = JSON.stringify({ email, password, password2 });
-
   const onSubmit = async e => {
-    await register({ email, password });
+    const config = {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    };
+    const bdy = JSON.stringify({ username, email, password });
+    const res = await axios.post("/auth", bdy, config);
+    register({ username, email, password });
   };
+  const body = JSON.stringify({ username, email, password, password2 });
 
   const submitFormHandler = e => {
     e.preventDefault();
     console.dir(this.refs.name.value);
-  }
+  };
 
-    return (
-      <div>
-        <div className="header">
-          <h1 className='large text-primary'>Register</h1>
-          <p className='load'>
-            <i className='fas fa-useer'> Create Account </i>
-          </p>
-          <form className="ui form" onSubmit={e => onSubmit(e)}>
-            <div className="field">
-              <input
-                type='text'
-                placeholder='email'
-                value={ref => email}
-                onChange={e => onChange(e)}
-              />
-            </div>
-            <div className="field">
-              <input
-                type='password'
-                placeholder='Enter Password'
-                name='password'
-                value={ ref => password }
-                onChange={e => onChange(e)}
-              />
-            </div>
-            <div className="field">
-              <input
-                type='password'
-                placeholder='Confirm Password'
-                name={password2}
-                value={ref => password2}
-                onChange={e => onChange(e)}
-              />
-            </div>
-            <button type='submit' className="ui button primary">
-              Register
-            </button>
-          </form>
-        </div>
-      </div>
-    );
+  return (
+    <Grid centered columns={3}>
+      <Grid.Column>
+        <Header as="h2" textAlign="center">
+          Register Here!!
+        </Header>
+        <Segment>
+          <Form size="large" onSubmit={onSubmit}>
+            <Form.Input
+              fluid
+              icon="user"
+              name="username"
+              type="text"
+              iconPosition="left"
+              placeholder="Username"
+              onChange={onChange}
+            />
+            <Form.Input
+              fluid
+              icon="email"
+              name="email"
+              type="email"
+              iconPosition="left"
+              placeholder="Email"
+              onChange={onChange}
+            />
+            <Form.Input
+              fluid
+              icon="password"
+              name="password"
+              type="password"
+              iconPosition="left"
+              placeholder="Password"
+              onChange={onChange}
+            />
+            <Form.Input
+              fluid
+              icon="passwordConfirm"
+              name="password2"
+              type="password"
+              iconPosition="left"
+              placeholder="Confirm Password"
+              onChange={onChange}
+            />
+            <Button className="ui button primary">Register</Button>
+          </Form>
+        </Segment>
+      </Grid.Column>
+    </Grid>
+  );
 };
 
 Register.propTypes = {
   setAlert: PropTypes.func.isRequired,
   register: PropTypes.func.isRequired
-}
+};
 
 const mapStateToProps = state => {
-  return ({ auth: state.auth.isAuthenticated });
-}
+  return { auth: state.auth.isAuthenticated };
+};
 
 export default connect(
   mapStateToProps,

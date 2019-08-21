@@ -1,10 +1,10 @@
-const mongoose = require('mongoose');
-const express = require('express');
-const app = express().use().cors();
-let cors = require('cors');
-const bodyParser = require('body-parser');
-const logger = require('morgan');
-const Data = require('./data');
+const mongoose = require("mongoose");
+const express = require("express");
+let cors = require("cors");
+const app = express();
+const bodyParser = require("body-parser");
+const logger = require("morgan");
+const User = require("./models/User");
 
 const API_PORT = 5000 || process.env.PORT;
 
@@ -12,7 +12,8 @@ const router = express.Router();
 
 // Thhis is our MongoDB Database
 
-const dbRoute = 'mongodb+srv://brad123:brad123@devconnector-cfb3y.mongodb.net/test?retryWrites=true&w=majority';
+const dbRoute =
+  "mongodb+srv://brad123:brad123@devconnector-cfb3y.mongodb.net/test?retryWrites=true&w=majority";
 
 // mongoose.conect(dbRoute, { useNewUrlParser: true });
 // Connect Database
@@ -21,48 +22,46 @@ mongoose.connect(dbRoute, { useNewUrlParser: true });
 
 let db = mongoose.connection;
 
-db.once('open', () => console.log('connected to the database'));
+db.once("open", () => console.log("connected to the database"));
 
 // checks if connection with the database is successful
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
 // (optional) only made for logging and
 // bodyParser, parses the request body to be a readable json format
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(logger('dev'));
+app.use(logger("dev"));
 
+// launch our backend into a port
+app.listen(API_PORT, () => console.log(`LISTENING ON PORT ${API_PORT}`));
+
+// append /api for our http requests
+app.use("http://localhost:5000", router);
 
 // this is our get method
 // this method fetches all available data in our database
-router.get('/getData', (req, res) => {
+router.get("/getData", (req, res) => {
   Data.find((err, data) => {
     if (err) return res.json({ success: false, error: err });
     return res.json({ success: true, data: data });
   });
 });
 
+const connectDB = async () => {
+  try {
+    await mongoose.connect(db, {
+      useNewUrlParser: true,
+      useCreateIndex: true,
+      useFindAndModify: false,
+      createIndexes: true
+    });
 
-
-// launch our backend into a port
-app.listen(API_PORT, () => console.log(`LISTENING ON PORT ${API_PORT}`));
-
-// append /api for our http requests
-app.use('/api', router);
-
-  const connectDB = async () => {
-    try {
-      await mongoose.connect(db, {
-       useNewUrlParser: true,
-       useCreateIndex: true,
-       useFindAndModify: false
-      });
-
-      console.log('MongoDB Connected...');
-    } catch(err) {
-      console.log(err.message)
-      process.exit(1);
-    }
+    console.log("MongoDB Connected...");
+  } catch (err) {
+    console.log(err.message);
+    process.exit(1);
   }
+};
 
-  module.exports = connectDB;
+module.exports = connectDB;
