@@ -5,22 +5,29 @@ import { setAlert } from '../../actions/alert';
 import { login } from '../../actions/auth';
 import axios from 'axios';
 import PropTypes from 'prop-types';
+import Dashboard from './Dashboard';
 
-const Login = ({ login , isAuthenticated }) => {
+import Register from './Register';
+import {
+  Button,
+  Form,
+  Grid,
+  Header,
+  Message,
+  Segment,
+} from 'semantic-ui-react';
+
+const Login = ({ login , setAlert }) => {
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
 
   const { email, password } = formData;
-
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
-
-  const onSubmit = async e => {
-    e.preventDefault();
+  const onSubmit = (email, password) => async dispatch =>
     login(email, password);
-  };
 
   const config = {
     headers: {
@@ -29,59 +36,60 @@ const Login = ({ login , isAuthenticated }) => {
   }
   const body = JSON.stringify({ email, password});
 
-  // Redirect if logged in
-  if (isAuthenticated) {
-    return <Redirect to="/dashboard" />
-  }
-
     return (
-      <div>
-        <div className="header">
-          <h1 className='large text-primary'>Sign Up</h1>
-          <p className='load'>
-            <i className='fas fa-user' /> Sign Into Your Account
-          </p>
-          <form className="ui form" onSubmit={e => onSubmit(e)}>
-            <div className="field">
-              <input
-                type='email'
-                name='email'
-                placeholder='Email Adress'
-                value={email}
-                onChange={e => onChange(e)}
-                label="Email:"
-              />
-            </div>
-            <div className="field">
-              <input
-                type='password'
-                name='password'
-                placeholder='password'
-                value={password}
-                onChange={e => onChange(e)}
-                label="Password:"
-              />
-            </div>
-            <button type='submit' className="ui button primary">
+        <Grid centered columns={2}>
+          <Grid.Column>
+            <Header as="h2" textAlign="center">
               Login
-            </button>
-          </form>
-        </div>
-      </div>
-    );
+            </Header>
+            <Segment>
+              <Form size="large">
+                <Form.Input
+                  fluid
+                  icon="email"
+                  type="text"
+                  name='email'
+                  placeholder="Email address"
+                  value={email}
+                  onChange={e => onChange(e)}
+                  iconPosition="left"
+                />
+                <Form.Input
+                  fluid
+                  icon="password"
+                  type="password"
+                  name='password'
+                  placeholder="Email a password"
+                  value={password}
+                  onChange={e => onChange(e)}
+                  iconPosition="left"
+                />
+                <Button color="blue" fluid size="large">
+                  Login
+                </Button>
+              </Form>
+            </Segment>
+            <Message>
+                 Not registered yet?
+                 <Link to="/register" component={Register}>
+                  Sign up here...
+                 </Link>
+               </Message>
+             </Grid.Column>
+           </Grid>
+     );
   };
 
   Login.propTypes = {
-    login: PropTypes.func.isRequired,
-    isAuthenticated: PropTypes.bool.isRequired
+    login: PropTypes.func.isRequired
   }
 
   const mapStateToProps = state => {
-    return ({ isAuthenticated: state.auth.isAuthenticated }
+    return ({ user: state.auth }
   )};
 
 
 export default connect(
   mapStateToProps,
-  { login }
+  { login, setAlert }
 )(Login);

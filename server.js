@@ -5,6 +5,8 @@ let cors = require('cors');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
 const Data = require('./data');
+const apis = require('./client/src/apis/api');
+const api = require('./routes/api/auth');
 
 const API_PORT = 5000 || process.env.PORT;
 
@@ -31,17 +33,7 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(logger('dev'));
-
-
-// this is our get method
-// this method fetches all available data in our database
-router.get('/getData', (req, res) => {
-  Data.find((err, data) => {
-    if (err) return res.json({ success: false, error: err });
-    return res.json({ success: true, data: data });
-  });
-});
-
+app.use('/api', apis);
 
 
 // launch our backend into a port
@@ -64,5 +56,13 @@ app.use('/api', router);
       process.exit(1);
     }
   }
+  // this is our get method
+  // this method fetches all available data in our database
+  router.get('/getData', (req, res) => {
+  Data.find((err, data) => {
+    if (err) return res.json({ success: false, error: err });
+    return res.json({ success: true, data: data });
+  });
+});
 
-  module.exports = connectDB;
+module.exports = routers;
