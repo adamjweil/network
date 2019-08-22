@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { setAlert } from '../../actions/alert';
 import { register } from '../../actions/auth';
 import axios from 'axios';
@@ -32,7 +32,8 @@ const Register = ({ setAlert, register }) => {
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
   const onSubmit = async dispatch => {
-    const res = await register({ username, email, password });
+    const res = register({ username, email, password });
+    return res;
   }
 
   const config = {
@@ -49,7 +50,7 @@ const Register = ({ setAlert, register }) => {
           Create an Account
           </Header>
         <Segment>
-          <Form size="md">
+          <Form size="md" onSubmit={register}>
             <Form.Input
               fluid
               icon="username"
