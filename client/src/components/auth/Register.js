@@ -3,10 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { setAlert } from '../../actions/alert';
 import { register } from '../../actions/auth';
-import axios from 'axios';
 import PropTypes from 'prop-types';
-import Dashboard from './Dashboard';
-import Login from './Login';
 import { loadUser } from '../../actions/auth';
 
 import {
@@ -18,7 +15,7 @@ import {
   Segment,
 } from 'semantic-ui-react';
 
-const Register = ({ setAlert, register }) => {
+const Register = ({ setAlert, register, loadUser }) => {
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -32,16 +29,9 @@ const Register = ({ setAlert, register }) => {
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
   const onSubmit = async dispatch => {
-    const res = register({ username, email, password });
-    return res;
+    const body = JSON.stringify({ username, email, password, password2 });
+    const res = await register(JSON.stringify({ username, email, password, password2  }));
   }
-
-  const config = {
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  }
-  const body = JSON.stringify({ username, email, password, password2 });
 
     return (
       <Grid centered columns={2}>
@@ -50,7 +40,7 @@ const Register = ({ setAlert, register }) => {
           Create an Account
           </Header>
         <Segment>
-          <Form size="md" onSubmit={register}>
+          <Form size="md" onSubmit={onSubmit}>
             <Form.Input
               fluid
               icon="username"
@@ -118,5 +108,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { register }
+  { register, setAlert, loadUser }
 )(Register);

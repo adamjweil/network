@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { setAlert } from '../../actions/alert';
-import { login } from '../../actions/auth';
+import { setAlert } from './../../actions/alert';
+import { login } from './../../actions/auth';
 import PropTypes from 'prop-types';
 
 import {
@@ -22,9 +22,10 @@ const Login = ({ login , setAlert }) => {
 
   const { email, password } = formData;
   const onChange = (e) =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  const onSubmit = (email, password) => async dispatch =>
-    login(email, password);
+    setFormData({ ...formData, [e.target.name]: e.target.value })
+
+  const onSubmit = ({ formData }) => async dispatch =>
+    login(formData)
 
     return (
         <Grid centered columns={2}>
@@ -33,7 +34,7 @@ const Login = ({ login , setAlert }) => {
               Login
             </Header>
             <Segment>
-              <Form size="large" onSubmit={ e => login(e) }>
+              <Form size="large" onSubmit={onSubmit} >
                 <Form.Input
                   fluid
                   icon="email"
@@ -54,7 +55,7 @@ const Login = ({ login , setAlert }) => {
                   onChange={e => onChange(e)}
                   iconPosition="left"
                 />
-                <Button color="blue" fluid size="large" onClick={ e => login(e)} >
+                <Button color="blue" fluid size="large">
                   Login
                 </Button>
               </Form>

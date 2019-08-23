@@ -1,68 +1,16 @@
 const mongoose = require('mongoose');
 const express = require('express');
-const app = express().use().cors();
-let cors = require('cors');
-const bodyParser = require('body-parser');
-const logger = require('morgan');
-const Data = require('./data');
-const apis = require('./client/src/apis/api');
-const api = require('./routes/api/auth');
+const connectDB = require('./config/db');
 
-const API_PORT = 5000 || process.env.PORT;
+const cors = require('cors');
+const app = express();
 
-const router = express.Router();
+app.use(cors())
 
-// Thhis is our MongoDB Database
+connectDB();
 
-const dbRoute = 'mongodb+srv://brad123:brad123@devconnector-cfb3y.mongodb.net/test?retryWrites=true&w=majority';
+app.get('/', (req, res) => res.send('API Running'));
 
-// mongoose.conect(dbRoute, { useNewUrlParser: true });
-// Connect Database
-// connectDB();
-mongoose.connect(dbRoute, { useNewUrlParser: true });
+const PORT = process.env.PORT || 5000;
 
-let db = mongoose.connection;
-
-db.once('open', () => console.log('connected to the database'));
-
-// checks if connection with the database is successful
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-
-// (optional) only made for logging and
-// bodyParser, parses the request body to be a readable json format
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-app.use(logger('dev'));
-app.use('/api', apis);
-
-
-// launch our backend into a port
-app.listen(API_PORT, () => console.log(`LISTENING ON PORT ${API_PORT}`));
-
-// append /api for our http requests
-app.use('/api', router);
-
-  const connectDB = async () => {
-    try {
-      await mongoose.connect(db, {
-       useNewUrlParser: true,
-       useCreateIndex: true,
-       useFindAndModify: false
-      });
-
-      console.log('MongoDB Connected...');
-    } catch(err) {
-      console.log(err.message)
-      process.exit(1);
-    }
-  }
-  // this is our get method
-  // this method fetches all available data in our database
-  router.get('/getData', (req, res) => {
-  Data.find((err, data) => {
-    if (err) return res.json({ success: false, error: err });
-    return res.json({ success: true, data: data });
-  });
-});
-
-module.exports = routers;
+app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
