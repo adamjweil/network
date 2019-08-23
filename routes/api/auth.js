@@ -16,7 +16,6 @@ router.get('/', auth, async (req, res) => {
     const user = await User.findById(req.body.user.id).select('-password');
     // const user = await User.findOne({ email });
     res.json({user});
-    console.log({ user });
   } catch(err) {
     console.error(err.message);
     res.status(500).send('Server Error');

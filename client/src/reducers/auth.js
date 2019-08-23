@@ -32,9 +32,7 @@ export default function(state = initialState, action) {
         isAuthenticated: true,
         loading: false
       }
-    case REGISTER_FAIL:
-    case AUTH_ERROR:
-    case LOGIN_FAIL:
+    case (REGISTER_FAIL, AUTH_ERROR, LOGIN_FAIL):
       localStorage.removeItem('token');
       return {
         ...state,
